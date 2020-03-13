@@ -1,6 +1,6 @@
 from django.urls import path
 #from . import views
-from .views import  enviarView, DetalleOrdenUpdate, DetalleOrdenListView, DetalleOrdenDetailView, DetalleOrdenCreate, DetalleOrdenDelete
+from .views import  DetalleOrdenListView_aprobador, enviarView, DetalleOrdenUpdate, DetalleOrdenListView, DetalleOrdenDetailView, DetalleOrdenCreate, DetalleOrdenDelete
 
 
 formulario_patterns = ([
@@ -11,4 +11,6 @@ formulario_patterns = ([
 
     path('delete/<int:pk>/', DetalleOrdenDelete.as_view(), name="Delete_DetalleOrden"),
     path('enviar', enviarView.as_view(), name="enviarDetalleOrden"),
+    path('lista_aprobador', DetalleOrdenListView_aprobador.as_view(), name="View_DetalleOrden_aprobador"),
+
 ],'formUrl')

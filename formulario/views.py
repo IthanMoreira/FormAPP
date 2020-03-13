@@ -10,8 +10,10 @@ from .forms import DetalleOrdenForm
 #from .forms import Venta_entradas
 from .models import DetalleOrden
 # Create your views here.
+
 class DetalleOrdenListView(ListView):
     model = DetalleOrden
+    
     paginate_by = 5
     def get_queryset(self):
         queryset = super(DetalleOrdenListView, self).get_queryset()
@@ -25,6 +27,16 @@ class DetalleOrdenListView(ListView):
         elif filter== 'Pendiente con observaciones':
             queryset = queryset.filter(Bandera_enviado=4)
         return queryset
+
+class DetalleOrdenListView_aprobador(ListView):
+    model = DetalleOrden
+    template_name = "formulario/detalleorden_list_aprobador.html"
+    paginate_by = 5
+    def get_queryset(self):
+        queryset = super(DetalleOrdenListView_aprobador, self).get_queryset()
+        queryset = queryset.filter(Bandera_enviado=2)
+        return queryset
+
 
 class DetalleOrdenDetailView(DetailView):
     model = DetalleOrden
@@ -41,7 +53,26 @@ class DetalleOrdenUpdate(UpdateView):
     template_name_suffix = '_update_form'
     def get_success_url(self):
         return reverse_lazy('formUrl:update_DetalleOrden', args=[self.object.id]) + '?ok'
+    def post(self, request, *args, **kwargs):    
+        form = DetalleOrdenForm(request.POST)
+        if form.is_valid():
+            if 'Aceptar' in request.POST:
+                print("ACEPTO")
+                post = form.save(commit=False)
+                post.Bandera_enviado=3
+                post.save()
 
+            if 'Rechazar' in request.POST:
+                print("rechazo")
+                post = form.save(commit=False)
+                post.Bandera_enviado=4
+                post.save()
+
+        else:
+            print("nada")
+            form = DetalleOrdenForm()
+            
+        return render(request, "core/base.html",{'form':DetalleOrden})
 
 
 class DetalleOrdenDelete(DeleteView):

@@ -8,14 +8,6 @@
 
 <main role="main">
   <div class="container mb-4">
-    <div>
-      <a href="{% url 'formUrl:View_DetalleOrden' %}">All</a>|
-      <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Guardado">Guardado</a>|
-      <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Enviado">Enviado</a>|
-      <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Aprobado">Aprobado</a>|
-      <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Pendiente con observaciones">Pendiente con observaciones</a>
-
-    </div>
     {% for DetalleOrden in detalleorden_list %}
       <div class="row mt-3">
         <div class="col-md-9 mx-auto">
@@ -23,24 +15,13 @@
 
           <div>
             
-            {% if request.user.groups.all.values.get.name == 'Vendedor_perfil'  %}
-              <div class="btn-group">
-                {% if 2 == DetalleOrden.Bandera_enviado %}
+
+            {% if request.user.groups.all.values.get.name == 'Aprobador_perfil'  %}
+               {% if 2 == DetalleOrden.Bandera_enviado %}
                   <a href="{% url 'formUrl:update_DetalleOrden' DetalleOrden.id %}" title="Ver" type="button" class="btn btn-success">Ver </a>
                 {% endif %}
-                {% if 1 == DetalleOrden.Bandera_enviado %}
-                  <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros -->
-                  <a href="{% url 'formUrl:update_DetalleOrden' DetalleOrden.id %}" title="Ver" type="button" class="btn btn-primary">Ver o editar </a>
-                  <a href="{% url 'formUrl:Delete_DetalleOrden' DetalleOrden.id %}" title="Eliminar" type="button" class="btn btn-danger">Eliminar </a>
-                {% endif %}
-              </div>
             {% endif %}
-            {% if request.user.groups.all.values.get.name == 'Aprobador_perfil'  %}
-              <div class="btn-group">
-                <a href="{% url 'formUrl:update_DetalleOrden' DetalleOrden.id %}" title="Editar" type="button" class="btn btn-primary">Ver </a>
-              </div>
-            {% endif %}
-            
+          
           </div>
         </div>
       </div>
