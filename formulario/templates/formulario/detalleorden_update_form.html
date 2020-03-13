@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Actualizar{% endblock %}
+{% include 'formulario/includes/pages_menu.html' %}
+{% block content %}
+<section class="page-section about-heading">
+  <div class="container">
+    <div class="about-heading-content">
+      <div class="row">
+        <div class="col-xl-9 col-lg-10 mx-auto">
+          <div class="bg-faded rounded p-5">
+            <h2 class="section-heading mb-4">
+              <span class="section-heading-upper">Formulario de </span>
+              <span class="section-heading-lower">ordenes</span>
+            </h2>
+            <!-- Formulario de contacto -->
+              {{request.user.get_full_name}}
+              
+                {% if 'ok' in request.GET %}
+                  <p style="color:green;">
+                    Página editada correctamente. 
+                  </p>
+                {% endif %}
+                <form action="" method="POST">{% csrf_token %}
+                    <table>
+                      {{form.as_table}}
+                    
+                    </table>
+                    {% if False == request.Bandera_enviado %}
+                      <div class="btn-group">
+                        <input type="submit" class="btn btn-primary btn-block py-2" value="Actualizar">
+                      </div>
+                    {% endif %}
+                </form>
+              
+
+            <!-- Fin formulario de contacto -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
