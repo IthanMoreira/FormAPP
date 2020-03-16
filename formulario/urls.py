@@ -1,6 +1,6 @@
 from django.urls import path
 #from . import views
-from .views import  DetalleOrdenListView_aprobador, enviarView, DetalleOrdenUpdate, DetalleOrdenListView, DetalleOrdenDetailView, DetalleOrdenCreate, DetalleOrdenDelete
+from .views import  DetalleOrdenListView_aprobador, enviarView, DetalleOrdenUpdate, DetalleOrdenListView, DetalleOrdenCreate, DetalleOrdenDelete,DetalleOrdenDetailView
 
 
 formulario_patterns = ([

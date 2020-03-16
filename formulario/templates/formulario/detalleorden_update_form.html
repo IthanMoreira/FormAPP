@@ -28,12 +28,13 @@
                       {{form.as_table}}
                     </table>
                     
-                    {% if 1 == detalleorden.Bandera_enviado %}
+                    {% if 1 == detalleorden.Bandera_enviado or 4 == detalleorden.Bandera_enviado and request.user.groups.all.values.get.name == 'Vendedor_perfil' %}
                       <div class="btn-group">
-                        <input type="submit" class="btn btn-primary btn-block py-2" value="Actualizar">
+                        <input type="submit" class="btn btn-primary btn-block py-2" value="Actualizar" name="Actualizar">
+                        <input type="submit" class="btn btn-success" value="Enviar" name="Enviar">
                       </div>
                     {% endif %}
-                    {% if 2 == detalleorden.Bandera_enviado %}
+                    {% if 2 == detalleorden.Bandera_enviado and request.user.groups.all.values.get.name == 'Aprobador_perfil' %}
                       <div class="btn-group">
                         <input type="submit" class="btn btn-primary btn-block py-2" value="Aceptar" name="Aceptar">
                         <input type="submit" class="btn btn-danger" value="Rechazar" name="Rechazar">

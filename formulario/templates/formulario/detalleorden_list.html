@@ -16,30 +16,32 @@
       <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Pendiente con observaciones">Pendiente con observaciones</a>
 
     </div>
+    {{estate.all}}
+    {% if 'ok' in request.GET %}
+      <p style="color:green;">
+        Página editada correctamente. 
+      </p>
+    {% endif %}
     {% for DetalleOrden in detalleorden_list %}
       <div class="row mt-3">
         <div class="col-md-9 mx-auto">
           <h2 class="mb-4">{{DetalleOrden.client.name_cliente}}</h2>
 
           <div>
-            
-            {% if request.user.groups.all.values.get.name == 'Vendedor_perfil'  %}
-              <div class="btn-group">
-                {% if 2 == DetalleOrden.Bandera_enviado %}
-                  <a href="{% url 'formUrl:update_DetalleOrden' DetalleOrden.id %}" title="Ver" type="button" class="btn btn-success">Ver </a>
-                {% endif %}
-                {% if 1 == DetalleOrden.Bandera_enviado %}
-                  <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros -->
-                  <a href="{% url 'formUrl:update_DetalleOrden' DetalleOrden.id %}" title="Ver" type="button" class="btn btn-primary">Ver o editar </a>
-                  <a href="{% url 'formUrl:Delete_DetalleOrden' DetalleOrden.id %}" title="Eliminar" type="button" class="btn btn-danger">Eliminar </a>
-                {% endif %}
-              </div>
-            {% endif %}
-            {% if request.user.groups.all.values.get.name == 'Aprobador_perfil'  %}
-              <div class="btn-group">
-                <a href="{% url 'formUrl:update_DetalleOrden' DetalleOrden.id %}" title="Editar" type="button" class="btn btn-primary">Ver </a>
-              </div>
-            {% endif %}
+
+
+              {% if request.user.groups.all.values.get.name == 'Vendedor_perfil'  %}
+                <div class="btn-group">
+                  {% if 2 == DetalleOrden.Bandera_enviado or 3 == DetalleOrden.Bandera_enviado %}
+                    <a href="{% url 'formUrl:update_DetalleOrden' DetalleOrden.id %}" title="Ver" type="button" class="btn btn-success">Ver </a>
+                  {% endif %}
+                  {% if 1 == DetalleOrden.Bandera_enviado or 4 == DetalleOrden.Bandera_enviado %}
+                    <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros -->
+                    <a href="{% url 'formUrl:update_DetalleOrden' DetalleOrden.id %}" title="Ver" type="button" class="btn btn-primary">Ver o editar </a>
+                    <a href="{% url 'formUrl:Delete_DetalleOrden' DetalleOrden.id %}" title="Eliminar" type="button" class="btn btn-danger">Eliminar </a>
+                  {% endif %}
+                </div>
+              {% endif %}
             
           </div>
         </div>
