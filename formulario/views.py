@@ -5,6 +5,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from .forms import DetalleOrdenForm
 #from .forms import Venta_entradas
@@ -53,8 +54,15 @@ class DetalleOrdenUpdate(UpdateView):
     template_name_suffix = '_update_form'
     def get_success_url(self):
         return reverse_lazy('formUrl:update_DetalleOrden', args=[self.object.id]) + '?ok'
-    def post(self, request, *args, **kwargs):    
+    def post(self, request, *args, **kwargs):
+
+        data = get_object_or_404(request, pk=self.object.id)
+
+        print("--------------------")
+        print(data)   
+        print("--------------------")
         form = DetalleOrdenForm(request.POST)
+        print(form.is_valid())
         if form.is_valid():
             if 'Aceptar' in request.POST:
                 print("ACEPTO")
