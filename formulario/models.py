@@ -4,22 +4,13 @@ from django.dispatch import Signal
 
 from django.contrib.auth import get_user_model
 
-class Direccion (models.Model):
-    direccion= models.CharField(max_length=100, verbose_name="Dirección",default='null')
-    comuna= models.CharField(max_length=100, verbose_name="Comuna",default='null')
-    ciudad= models.CharField(max_length=100, verbose_name="Ciudad",default='null')   
-    provincia=models.CharField(max_length=100, verbose_name="Provincia",default='null')   
-    zip_code=models.CharField(max_length=100, verbose_name="ZIP Code",default='null')   
-    pais=models.CharField(max_length=100, verbose_name="País",default='null')   
-
-    def __str__(self):
-        return self.direccion
 
 class Cliente (models.Model):
+    id_client=models.CharField(max_length=100, verbose_name="Id del cliente",primary_key=True)
     name_cliente= models.CharField(max_length=100, verbose_name="Nombre del Cliente")
     RUT_cliente= models.CharField(max_length=100, verbose_name="RUT del Cliente")
     categoria_cliente= models.CharField(max_length=100, verbose_name="Categoria de Cliente")
-    direccion=models.ForeignKey(Direccion,on_delete=models.PROTECT)
+    name_contact=models.CharField(max_length=100, verbose_name="Nombre contacto")
     class Meta:
         verbose_name = "Cliente"
         verbose_name_plural = "Clientes"
@@ -29,14 +20,6 @@ class Cliente (models.Model):
 
 
 
-class Contacto(models.Model):
-    registro_contacto= models.CharField(max_length=100, verbose_name="Registro de Contacto en Sistema")
-    nombreApellido= models.CharField(max_length=100, verbose_name="Nombre y Apellido Contacto")
-    tipo_contacto= models.CharField(max_length=100, verbose_name="RUT del Cliente")
-
-    def __str__(self):
-        return self.registro_contacto
-   
 
 DEMO_CHOICES = ( 
     ("Boleta", "Boleta"), 
@@ -61,7 +44,6 @@ estado_orden_CHOICE = (
 
 class DetalleOrden(models.Model):
     client=models.ForeignKey(Cliente, on_delete=models.PROTECT)
-    contacto=models.ForeignKey(Contacto, on_delete=models.PROTECT)
     solicitud= models.CharField(default='NUEVA ORDEN',choices=solicitud_CHOICE,max_length=100, verbose_name="Tipo de Solicitud")
     aumentoModificacion= models.CharField(max_length=100, verbose_name="En caso de aumento o modificación ingrese el  N° DE ORDEN",blank=True,null=True)
     documentoTributario= models.CharField(max_length=30,choices=DEMO_CHOICES,default='Factura' ,verbose_name="Documento Tributario")
@@ -73,7 +55,3 @@ class DetalleOrden(models.Model):
 
     def __str__(self):
         return self.solicitud
-
-
-
-
