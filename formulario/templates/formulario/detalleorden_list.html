@@ -8,7 +8,16 @@
 
 <main role="main">
   <div class="container mb-4">
+    <form action="{% url 'formUrl:View_DetalleOrden' %}" method="GET">
+       ID : 
+        <input type="number" name="filterId"  style="width:60px" / >
+        <input type="submit" value="Filtrar">
+        
+        {% csrf_token %}
+    </form>
+
     <div>
+      
       <a href="{% url 'formUrl:View_DetalleOrden' %}">All</a>|
       <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Guardado">Guardado</a>|
       <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Enviado">Enviado</a>|
@@ -22,14 +31,29 @@
         Página editada correctamente. 
       </p>
     {% endif %}
-    {% for DetalleOrden in detalleorden_list %}
-      <div class="row mt-3">
-        <div class="col-md-9 mx-auto">
-          <h2 class="mb-4">{{DetalleOrden.client.name_cliente}}</h2>
-
-          <div>
-
-
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <td>Nombres cliente</td>
+          <td>Tipo de Solicitud</td>
+          <td>aumentoModificacion</td>
+          <td>Documento Tributario</td>
+          <td>Incluye Alimentación</td>
+          <td>Acciones</td>
+        </tr>
+        
+      </thead>
+      <tbody>
+        {% if object_list %}
+        {% for DetalleOrden in detalleorden_list %}
+        <tr>
+          <td>{{ DetalleOrden.client.name_cliente }}</td>
+          <td>{{ DetalleOrden.solicitud }}</td>
+          <td>{{ DetalleOrden.aumentoModificacion }}</td>
+          <td>{{ DetalleOrden.documentoTributario }}</td>
+          <td>{{ DetalleOrden.alimentacion }}</td>
+          
+          <td>
               {% if request.user.groups.all.values.get.name == 'Vendedor_perfil'  %}
                 <div class="btn-group">
                   {% if 2 == DetalleOrden.Bandera_enviado or 3 == DetalleOrden.Bandera_enviado %}
@@ -42,11 +66,15 @@
                   {% endif %}
                 </div>
               {% endif %}
-            
-          </div>
-        </div>
-      </div>
-      {% endfor %}
+          </td>
+        </tr>
+        {% endfor %}
+        
+        {% else %}
+        <h1>No hay registros </h1>
+        {% endif %}
+      </tbody>
+    </table>
               <!-- Menú de paginación -->
           {% if is_paginated %}
           <nav aria-label="Page navigation">

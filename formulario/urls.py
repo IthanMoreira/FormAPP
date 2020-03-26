@@ -12,5 +12,4 @@ formulario_patterns = ([
     path('delete/<int:pk>/', DetalleOrdenDelete.as_view(), name="Delete_DetalleOrden"),
     path('enviar', enviarView.as_view(), name="enviarDetalleOrden"),
     path('lista_aprobador', DetalleOrdenListView_aprobador.as_view(), name="View_DetalleOrden_aprobador"),
-
 ],'formUrl')

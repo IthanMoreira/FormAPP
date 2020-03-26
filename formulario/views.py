@@ -15,19 +15,29 @@ from .models import DetalleOrden
 class DetalleOrdenListView(ListView):
     model = DetalleOrden
     
-    paginate_by = 5
+    paginate_by = 8
     def get_queryset(self):
         queryset = super(DetalleOrdenListView, self).get_queryset()
         filter = self.request.GET.get('filter')
+        filterId = self.request.GET.get('filterId')
+        print(type(filterId))
         if filter == 'Guardado':
             queryset = queryset.filter(Bandera_enviado=1)
+
         elif filter== 'Enviado':
             queryset = queryset.filter(Bandera_enviado=2)
         elif filter== 'Aprobado':
             queryset = queryset.filter(Bandera_enviado=3)
         elif filter== 'Pendiente con observaciones':
             queryset = queryset.filter(Bandera_enviado=4)
+        
+        if filterId != '' and filterId!=None:
+            print(filterId)
+            queryset = queryset.filter(id=filterId)
+
         return queryset
+
+
 
 class DetalleOrdenListView_aprobador(ListView):
     model = DetalleOrden
@@ -35,7 +45,11 @@ class DetalleOrdenListView_aprobador(ListView):
     paginate_by = 5
     def get_queryset(self):
         queryset = super(DetalleOrdenListView_aprobador, self).get_queryset()
+        filterId = self.request.GET.get('filterId')
         queryset = queryset.filter(Bandera_enviado=2)
+        if filterId != '' and filterId!=None:
+            print(filterId)
+            queryset = queryset.filter(id=filterId)
         return queryset
 
 
@@ -109,3 +123,4 @@ class enviarView(TemplateView):
             
             
         return render(request, "core/base.html",{'form':DetalleOrden})
+

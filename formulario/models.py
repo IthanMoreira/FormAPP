@@ -14,12 +14,9 @@ class Cliente (models.Model):
     class Meta:
         verbose_name = "Cliente"
         verbose_name_plural = "Clientes"
-
+        
     def __str__(self):
         return self.name_cliente
-
-
-
 
 DEMO_CHOICES = ( 
     ("Boleta", "Boleta"), 
@@ -43,7 +40,7 @@ estado_orden_CHOICE = (
 )  
 
 class DetalleOrden(models.Model):
-    client=models.ForeignKey(Cliente, on_delete=models.PROTECT)
+    client=models.ForeignKey(Cliente, on_delete=models.PROTECT,verbose_name="Cliente")
     solicitud= models.CharField(default='NUEVA ORDEN',choices=solicitud_CHOICE,max_length=100, verbose_name="Tipo de Solicitud")
     aumentoModificacion= models.CharField(max_length=100, verbose_name="En caso de aumento o modificación ingrese el  N° DE ORDEN",blank=True,null=True)
     documentoTributario= models.CharField(max_length=30,choices=DEMO_CHOICES,default='Factura' ,verbose_name="Documento Tributario")
@@ -52,6 +49,5 @@ class DetalleOrden(models.Model):
     class Meta:
         verbose_name = "DetalleOrden"
         verbose_name_plural = "DetalleOrdenes"
+        ordering=['client']
 
-    def __str__(self):
-        return self.solicitud
