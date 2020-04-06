@@ -14,9 +14,10 @@ class Cliente (models.Model):
     class Meta:
         verbose_name = "Cliente"
         verbose_name_plural = "Clientes"
+        ordering=['name_cliente']
         
     def __str__(self):
-        return self.name_cliente
+        return self.id_client
 
 DEMO_CHOICES = ( 
     ("Boleta", "Boleta"), 
@@ -37,6 +38,7 @@ estado_orden_CHOICE = (
     (2, "Enviado"), 
     (3, "Aprobado"),
     (4, "Pendiente con observaciones"),
+    (5, "Rechazar"),
 )  
 
 class DetalleOrden(models.Model):
@@ -51,3 +53,12 @@ class DetalleOrden(models.Model):
         verbose_name_plural = "DetalleOrdenes"
         ordering=['client']
 
+class Articulos(models.Model):
+    datos=models.ForeignKey(DetalleOrden, on_delete=models.CASCADE,verbose_name="Datos")
+    articulo= models.CharField(default=' ',max_length=100, verbose_name="Articulo",blank=True,null=True)
+    cantidad= models.IntegerField(default=0, verbose_name="Cantidad",blank=True,null=True)
+    detalle= models.CharField(default=' ', max_length=30, verbose_name="Detalle",blank=True,null=True)
+    tipo= models.CharField(default=' ', max_length=100, verbose_name="Tipo",blank=True,null=True)
+    class Meta:
+        verbose_name = "Articulo"
+        verbose_name_plural = "Articulos"

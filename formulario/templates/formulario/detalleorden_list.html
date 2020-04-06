@@ -22,10 +22,11 @@
       <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Guardado">Guardado</a>|
       <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Enviado">Enviado</a>|
       <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Aprobado">Aprobado</a>|
-      <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Pendiente con observaciones">Pendiente con observaciones</a>
+      <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Pendiente con observaciones">Pendiente con observaciones</a>|
+      <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Rechazar">Rechazado</a>|
 
     </div>
-    {{estate.all}}
+    
     {% if 'ok' in request.GET %}
       <p style="color:green;">
         Página editada correctamente. 
@@ -35,40 +36,42 @@
       <thead>
         <tr>
           <td>Nombres cliente</td>
-          <td>Tipo de Solicitud</td>
+          <td>RUT del cliente</td>
           <td>aumentoModificacion</td>
           <td>Documento Tributario</td>
           <td>Incluye Alimentación</td>
+          <td>Estado</td>
           <td>Acciones</td>
         </tr>
         
       </thead>
       <tbody>
         {% if object_list %}
-        {% for DetalleOrden in detalleorden_list %}
-        <tr>
-          <td>{{ DetalleOrden.client.name_cliente }}</td>
-          <td>{{ DetalleOrden.solicitud }}</td>
-          <td>{{ DetalleOrden.aumentoModificacion }}</td>
-          <td>{{ DetalleOrden.documentoTributario }}</td>
-          <td>{{ DetalleOrden.alimentacion }}</td>
-          
-          <td>
-              {% if request.user.groups.all.values.get.name == 'Vendedor_perfil'  %}
-                <div class="btn-group">
-                  {% if 2 == DetalleOrden.Bandera_enviado or 3 == DetalleOrden.Bandera_enviado %}
-                    <a href="{% url 'formUrl:update_DetalleOrden' DetalleOrden.id %}" title="Ver" type="button" class="btn btn-success">Ver </a>
+          {% for DetalleOrden in detalleorden_list %}
+            <tr>
+              <td>{{ DetalleOrden.client.name_cliente }}</td>
+              <td>{{ DetalleOrden.client.RUT_cliente }}</td>
+              <td>{{ DetalleOrden.aumentoModificacion }}</td>
+              <td>{{ DetalleOrden.documentoTributario }}</td>
+              <td>{{ DetalleOrden.alimentacion }}</td>
+              <td>{{ DetalleOrden.get_Bandera_enviado_display }}</td>
+              
+              <td>
+                  {% if request.user.groups.all.values.get.name == 'Vendedor_perfil'  %}
+                    <div class="btn-group">
+                      {% if 2 == DetalleOrden.Bandera_enviado or 3 == DetalleOrden.Bandera_enviado or 5 == DetalleOrden.Bandera_enviado%}
+                        <a href="{% url 'formUrl:update_DetalleOrden' DetalleOrden.id %}" title="Ver" type="button" class="btn btn-success">Ver </a>
+                      {% endif %}
+                      {% if 1 == DetalleOrden.Bandera_enviado or 4 == DetalleOrden.Bandera_enviado %}
+                        <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros -->
+                        <a href="{% url 'formUrl:update_DetalleOrden' DetalleOrden.id %}" title="Ver" type="button" class="btn btn-primary">Ver o editar </a>
+                        <a href="{% url 'formUrl:Delete_DetalleOrden' DetalleOrden.id %}" title="Eliminar" type="button" class="btn btn-danger">Eliminar </a>
+                      {% endif %}
+                    </div>
                   {% endif %}
-                  {% if 1 == DetalleOrden.Bandera_enviado or 4 == DetalleOrden.Bandera_enviado %}
-                    <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros -->
-                    <a href="{% url 'formUrl:update_DetalleOrden' DetalleOrden.id %}" title="Ver" type="button" class="btn btn-primary">Ver o editar </a>
-                    <a href="{% url 'formUrl:Delete_DetalleOrden' DetalleOrden.id %}" title="Eliminar" type="button" class="btn btn-danger">Eliminar </a>
-                  {% endif %}
-                </div>
-              {% endif %}
-          </td>
-        </tr>
-        {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
         
         {% else %}
         <h1>No hay registros </h1>

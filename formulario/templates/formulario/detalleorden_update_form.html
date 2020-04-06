@@ -16,16 +16,39 @@
               <span class="section-heading-lower">ordenes</span>
             </h2>
             <!-- Formulario de contacto -->
-              {{request.Bandera_enviado}}
-              
+                           
                 {% if 'ok' in request.GET %}
                   <p style="color:green;">
                     Página editada correctamente. 
                   </p>
                 {% endif %}
                 <form action="" method="POST">{% csrf_token %}
-                    <table>
+                  <table>
                       {{form.as_table}}
+                      {{ detalle_compra_form_set.management_form }}
+                      <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <td>Articulo</td>
+                              <td>Cantidad</td>
+                              <td>Detalle</td>
+                              <td>Tipo</td>
+                            </tr>                        
+                          </thead>
+                          <tbody>
+                            
+                              {% for form2 in detalle_compra_form_set %}
+                                <tr>
+                                  <td> {{form2.articulo}} </td>
+                                  <td> {{form2.cantidad}} </td>
+                                  <td> {{form2.detalle}} </td>
+                                  <td> {{form2.tipo}} </td>
+                                </tr>
+                              {% endfor %}
+                          </tbody>
+                        </table>
+                    
+                    
                     </table>
                     
                     {% if 1 == detalleorden.Bandera_enviado or 4 == detalleorden.Bandera_enviado and request.user.groups.all.values.get.name == 'Vendedor_perfil' %}
@@ -36,8 +59,10 @@
                     {% endif %}
                     {% if 2 == detalleorden.Bandera_enviado and request.user.groups.all.values.get.name == 'Aprobador_perfil' %}
                       <div class="btn-group">
-                        <input type="submit" class="btn btn-primary btn-block py-2" value="Aceptar" name="Aceptar">
+                        <input type="submit" class="btn btn-success" value="Aceptar" name="Aceptar">
                         <input type="submit" class="btn btn-danger" value="Rechazar" name="Rechazar">
+                        <input type="submit" class="btn btn-primary btn-block py-2" value="Revisar" name="Revisar">
+
                       </div>
                     {% endif %}
                 </form>
