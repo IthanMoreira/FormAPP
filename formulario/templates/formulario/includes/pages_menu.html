@@ -13,10 +13,29 @@
     <div class="collapse navbar-collapse" id="nep">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'formUrl:createFormDetalleOrden' %}"><i>Crear formulario</i></a>
+          <a class="nav-link" href="{% url 'formUrl:selectClientFormDetalleOrden' %}"><i>Crear orden</i></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'formUrl:View_DetalleOrden' %}"><i>Listar formularios</i></a>
+          <a class="nav-link" href="{% url 'formUrl:View_DetalleOrden' %}"><i>Listar ordenes</i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endif %}
+
+
+{% if request.user.groups.all.values.get.name == 'Aprobador_perfil'  %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <span class="navbar-brand" href="#"><i>Administrar</i></span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nep" aria-controls="nep" aria-expanded="false">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nep">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'formUrl:View_DetalleOrden_aprobador' %}"><i>Listar formularios</i></a>
         </li>
       </ul>
     </div>
