@@ -42,12 +42,14 @@ estado_orden_CHOICE = (
 )  
 
 class DetalleOrden(models.Model):
+    #user = models.OneToOneField(User, on_delete=models.CASCADE)
     client=models.ForeignKey(Cliente, on_delete=models.PROTECT,verbose_name="Cliente")
     solicitud= models.CharField(default='NUEVA ORDEN',choices=solicitud_CHOICE,max_length=100, verbose_name="Tipo de Solicitud")
     aumentoModificacion= models.CharField(max_length=100, verbose_name="En caso de aumento o modificación ingrese el  N° DE ORDEN",blank=True,null=True)
     documentoTributario= models.CharField(max_length=30,choices=DEMO_CHOICES,default='Factura' ,verbose_name="Documento Tributario")
     alimentacion= models.CharField(default='NO',choices=alimentacion_CHOICES,max_length=100, verbose_name="Incluye Alimentación")
     Bandera_enviado=models.IntegerField(choices=estado_orden_CHOICE,default=1,verbose_name="Enviado")
+    #created = models.DateTimeField(auto_now_add=True)
     class Meta:
         verbose_name = "DetalleOrden"
         verbose_name_plural = "DetalleOrdenes"
@@ -55,10 +57,13 @@ class DetalleOrden(models.Model):
 
 class Articulos(models.Model):
     datos=models.ForeignKey(DetalleOrden, on_delete=models.CASCADE,verbose_name="Datos")
-    articulo= models.CharField(default=' ',max_length=100, verbose_name="Articulo",blank=True,null=True)
+    articulo= models.CharField(default=' ',max_length=100, verbose_name="Item",blank=True,null=True)
     cantidad= models.IntegerField(default=0, verbose_name="Cantidad",blank=True,null=True)
-    detalle= models.CharField(default=' ', max_length=30, verbose_name="Detalle",blank=True,null=True)
-    tipo= models.CharField(default=' ', max_length=100, verbose_name="Tipo",blank=True,null=True)
+    desde = models.DateTimeField(auto_now_add=False, verbose_name="Fecha desde")
+    hasta = models.DateTimeField(auto_now_add=False, verbose_name="Fecha hasta")
+    valor_bruto = models.IntegerField(verbose_name="Precio bruto")
+    detalle= models.CharField(default=' ', max_length=30, verbose_name="Notas",blank=True,null=True)
     class Meta:
         verbose_name = "Articulo"
         verbose_name_plural = "Articulos"
+        

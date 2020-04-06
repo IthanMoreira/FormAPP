@@ -17,13 +17,6 @@ class ClienteForm(forms.ModelForm):
         self.fields['categoria_cliente'].disabled = True
         self.fields['name_contact'].disabled = True
 
-class ArticuloForm(forms.ModelForm):
-
-    class Meta:
-        model = Articulos
-        fields=['articulo','cantidad','detalle','tipo']
-
-
 class DetalleOrdenForm(forms.ModelForm):
 
     class Meta:
@@ -42,13 +35,19 @@ class ArticuloForm2(forms.ModelForm):
 
     class Meta:
         model = Articulos
-        fields=['articulo','cantidad','detalle','tipo']
+        fields=['articulo','cantidad','detalle','valor_bruto','desde','hasta']
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['articulo'].disabled = True
         self.fields['cantidad'].disabled = True
         self.fields['detalle'].disabled = True
-        self.fields['tipo'].disabled = True
+
+class ArticuloForm(forms.ModelForm):
+
+    class Meta:
+        model = Articulos
+        fields=['articulo','cantidad','detalle','valor_bruto','desde','hasta']
+
 
 DetalleArticuloFormSet = inlineformset_factory(DetalleOrden, Articulos, form= ArticuloForm, extra=5)
 DetalleArticuloFormSet2 = inlineformset_factory(DetalleOrden, Articulos, form= ArticuloForm2, extra=5)
