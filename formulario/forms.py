@@ -41,6 +41,9 @@ class ArticuloForm2(forms.ModelForm):
         self.fields['articulo'].disabled = True
         self.fields['cantidad'].disabled = True
         self.fields['detalle'].disabled = True
+        self.fields['valor_bruto'].disabled = True
+        self.fields['desde'].disabled = True
+        self.fields['hasta'].disabled = True
 
 class ArticuloForm(forms.ModelForm):
 

@@ -70,10 +70,13 @@ class DetalleOrdenUpdate(UpdateView):
         detalles = Articulos.objects.filter(datos=self.object).order_by('pk')
         detalles_data = []
         for detalle in detalles:
+            
             d = {'articulo': detalle.articulo,
-                'cantidad': detalle.cantidad,
-                'detalle': detalle.detalle,
-                'tipo': detalle.tipo}
+                 'cantidad': detalle.cantidad,
+                 'desde': detalle.desde,
+                 'hasta': detalle.hasta,
+                 'valor_bruto': detalle.valor_bruto,
+                 'detalle': detalle.detalle}
             detalles_data.append(d)
         #Ponemos como datos iniciales del formset el diccionario que hemos obtenido
         if self.object.Bandera_enviado == 2 or self.object.Bandera_enviado == 3 or self.object.Bandera_enviado == 5:
@@ -92,33 +95,33 @@ class DetalleOrdenUpdate(UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         detalle_form_set = DetalleArticuloFormSet(request.POST)
+        print(detalle_form_set.is_valid())
         if form.is_valid() and detalle_form_set.is_valid():
             if 'Actualizar' in request.POST:
-                print("holaaaaaaaaaaaaaaaaaaa")
                 self.object = form.save() 
                 detalle_form_set.instance =self.object
                 Articulos.objects.filter(datos = self.object).delete()
                 detalle_form_set.save()
-                return redirect('formUrl:View_DetalleOrden')
+                #return redirect('formUrl:View_DetalleOrden')
             elif 'Enviar' in request.POST:
                 self.object.Bandera_enviado = 2
                 self.object.save()
                 detalle_form_set.instance =self.object
                 Articulos.objects.filter(datos = self.object).delete()
                 detalle_form_set.save()
-                return redirect('formUrl:View_DetalleOrden')
+                #return redirect('formUrl:View_DetalleOrden')
             elif 'Aceptar' in request.POST:
                 self.object.Bandera_enviado = 3
                 self.object.save()
-                return redirect('formUrl:View_DetalleOrden_aprobador')
+                #return redirect('formUrl:View_DetalleOrden_aprobador')
             elif 'Revisar' in request.POST:
                 self.object.Bandera_enviado = 4
                 self.object.save()
-                return redirect('formUrl:View_DetalleOrden_aprobador')
+                #return redirect('formUrl:View_DetalleOrden_aprobador')
             elif 'Rechazar' in request.POST:
                 self.object.Bandera_enviado = 5
                 self.object.save()
-                return redirect('formUrl:View_DetalleOrden_aprobador')
+                #return redirect('formUrl:View_DetalleOrden_aprobador')
 
         
         return super().post(request, *args, **kwargs)
@@ -164,6 +167,7 @@ class enviarView(TemplateView):
                 post = form.save(commit=False)
                 post.client=client
                 post.Bandera_enviado=1
+                post.user=request.user
                 post.save()
                 detalle_form_set.instance = post
                 detalle_form_set.save()
@@ -175,7 +179,8 @@ class enviarView(TemplateView):
                 detalle_form_set.instance = post
                 detalle_form_set.save()
         else:
-            print("dddddddd")
+            print(form.is_valid())
+            print(detalle_form_set.is_valid())            
             form = DetalleOrdenForm()
             
             

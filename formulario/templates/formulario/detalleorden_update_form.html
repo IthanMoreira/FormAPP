@@ -8,70 +8,104 @@
 <section class="page-section about-heading">
   <div class="container">
     <div class="about-heading-content">
-      <div class="row">
-        <div class="col-xl-9 col-lg-10 mx-auto">
-          <div class="bg-faded rounded p-5">
-            <h2 class="section-heading mb-4">
-              <span class="section-heading-upper">Formulario de </span>
-              <span class="section-heading-lower">ordenes</span>
-            </h2>
-            <!-- Formulario de contacto -->
-                           
-                {% if 'ok' in request.GET %}
-                  <p style="color:green;">
-                    Página editada correctamente. 
-                  </p>
-                {% endif %}
-                <form action="" method="POST">{% csrf_token %}
-                  <table>
-                      {{form.as_table}}
-                      {{ detalle_compra_form_set.management_form }}
-                      <table class="table table-bordered">
-                          <thead>
-                            <tr>
-                              <td>Articulo</td>
-                              <td>Cantidad</td>
-                              <td>Detalle</td>
-                              <td>Tipo</td>
-                            </tr>                        
-                          </thead>
-                          <tbody>
-                            
-                              {% for form2 in detalle_compra_form_set %}
-                                <tr>
-                                  <td> {{form2.articulo}} </td>
-                                  <td> {{form2.cantidad}} </td>
-                                  <td> {{form2.detalle}} </td>
-                                  <td> {{form2.tipo}} </td>
-                                </tr>
-                              {% endfor %}
-                          </tbody>
-                        </table>
-                    
-                    
-                    </table>
-                    
-                    {% if 1 == detalleorden.Bandera_enviado or 4 == detalleorden.Bandera_enviado and request.user.groups.all.values.get.name == 'Vendedor_perfil' %}
-                      <div class="btn-group">
-                        <input type="submit" class="btn btn-primary btn-block py-2" value="Actualizar" name="Actualizar">
-                        <input type="submit" class="btn btn-success" value="Enviar" name="Enviar">
-                      </div>
-                    {% endif %}
-                    {% if 2 == detalleorden.Bandera_enviado and request.user.groups.all.values.get.name == 'Aprobador_perfil' %}
-                      <div class="btn-group">
-                        <input type="submit" class="btn btn-success" value="Aceptar" name="Aceptar">
-                        <input type="submit" class="btn btn-danger" value="Rechazar" name="Rechazar">
-                        <input type="submit" class="btn btn-primary btn-block py-2" value="Revisar" name="Revisar">
+      <div class="row justify-content-md-center">
+        {% if 'ok' in request.GET %}
+          <p style="color:green;">
+            Página editada correctamente. 
+          </p>
+        {% endif %}
+        <form action="" method="POST">{% csrf_token %}
+          <div class="col-xl-9 col-lg-10 mx-auto">
+            <div class="bg-faded rounded p-5">
+              <h2 class="section-heading mb-4">
+                <span class="section-heading-upper">Formulario de </span>
+                <span class="section-heading-lower">ordenes</span>
+              </h2>
+              <!-- Formulario de contacto -->
 
-                      </div>
-                    {% endif %}
-                </form>
-              
-
-            <!-- Fin formulario de contacto -->
+              <table>
+                {{form.as_table}}
+              </table>
+            </div>
           </div>
-        </div>
+          <div class="col-md-auto">                          
+            {{ detalle_compra_form_set.management_form }}
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <td>Item</td>
+                  <td>Cantidad</td>
+                  <td>Fecha desde</td>
+                  <td>Fecha hasta</td>
+                  <td>Precio bruto</td>
+                  <td>Notas</td>
+                </tr>                        
+              </thead>
+                <tbody>              
+                  {% for form2 in detalle_compra_form_set %}                     
+                    <tr>
+                      <td> {{form2.articulo}} </td>
+                      <td> {{form2.cantidad}} </td>
+                      <td>                       
+                        <div class="input-group date" id="datetimepicker{{forloop.counter}}" data-target-input="nearest" style='width: 250px;'>
+                          {{form2.desde}}                                    
+                          <div class="input-group-append" data-target="#datetimepicker{{forloop.counter}}" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                          </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#datetimepicker{{forloop.counter}}').datetimepicker({
+                                    locale: 'es',
+                                    format: 'DD/MM/YYYY',
+                                    autoclose: true
+                                    
+                                });
+                            });
+                        </script>
+                      </td>
+                      <td>                       
+                        <div class="input-group date" id="datetimepicker1{{forloop.counter}}" data-target-input="nearest" style='width: 250px;'>
+                          {{form2.hasta}}                                    
+                          <div class="input-group-append" data-target="#datetimepicker1{{forloop.counter}}" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                          </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#datetimepicker1{{forloop.counter}}').datetimepicker({
+
+                                    locale: 'es',
+                                    format: 'DD/MM/YYYY',
+                                    autoclose: true
+                                    
+                                });
+                            });
+                        </script>
+                      </td>
+                      <td> {{form2.valor_bruto}} </td>
+                      <td> {{form2.detalle}} </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+            </table>                    
+          </div>                                  
+          {% if 1 == detalleorden.Bandera_enviado or 4 == detalleorden.Bandera_enviado and request.user.groups.all.values.get.name == 'Vendedor_perfil' %}
+            <div class="btn-group">
+              <input type="submit" class="btn btn-primary btn-block py-2" value="Actualizar" name="Actualizar">
+              <input type="submit" class="btn btn-success" value="Enviar" name="Enviar">
+            </div>
+          {% endif %}
+          {% if 2 == detalleorden.Bandera_enviado and request.user.groups.all.values.get.name == 'Aprobador_perfil' %}
+            <div class="btn-group">
+              <input type="submit" class="btn btn-success" value="Aceptar" name="Aceptar">
+              <input type="submit" class="btn btn-danger" value="Rechazar" name="Rechazar">
+              <input type="submit" class="btn btn-primary btn-block py-2" value="Revisar" name="Revisar">
+            </div>
+          {% endif %}
+        </form>
       </div>
+      
     </div>
   </div>
 </section>
