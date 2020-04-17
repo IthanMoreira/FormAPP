@@ -36,8 +36,7 @@
             <td>{{ cliente.name_cliente }}</td>
             <td>{{ cliente.RUT_cliente }}</td>
             <td>{{ cliente.categoria_cliente }}</td>
-            <td>{{ cliente.name_contact }}</td>
-            
+            <td>{{ cliente.name_contact }}</td>            
             <td>
                 {% if request.user.groups.all.values.get.name == 'Vendedor_perfil'  %}
                   <div class="btn-group">
@@ -48,7 +47,7 @@
           </tr>
           {% endfor %}
           
-          {% else %}
+        {% else %}
           <h1>No hay registros </h1>
         {% endif %}
       </tbody>

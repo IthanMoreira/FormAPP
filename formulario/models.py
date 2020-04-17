@@ -54,6 +54,9 @@ estado_orden_CHOICE = (
     (3, "Aprobado"),
     (4, "Pendiente con observaciones"),
     (5, "Rechazar"),
+    (6, "Aprobado tesoreria"),
+    (7, "Pendiente con observaciones tesoreria"),
+    (8, "Rechazar tesoreria"),
 )  
 
 class DetalleOrden(models.Model):
@@ -64,7 +67,7 @@ class DetalleOrden(models.Model):
     documentoTributario= models.CharField(max_length=30,choices=DEMO_CHOICES,default='Factura' ,verbose_name="Documento Tributario")
     alimentacion= models.CharField(default='NO',choices=alimentacion_CHOICES,max_length=100, verbose_name="Incluye Alimentación")
     Bandera_enviado=models.IntegerField(choices=estado_orden_CHOICE,default=1,verbose_name="Enviado")
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateField(auto_now_add=True)
     sales_program = models.CharField(max_length=100, verbose_name="Sales program")
     coment_ecomer = models.CharField(max_length=5000, verbose_name="Comentarios",blank=True,null=True)
     coment_eteso = models.CharField(max_length=5000, verbose_name="Comentarios",blank=True,null=True)

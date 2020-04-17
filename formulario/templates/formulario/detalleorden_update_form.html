@@ -23,6 +23,7 @@
               </h2>
               <!-- Formulario de contacto -->
 
+              
               <table>
                 {{form.as_table}}
               </table>
@@ -89,7 +90,15 @@
                   {% endfor %}
                 </tbody>
             </table>                    
-          </div>                                  
+          </div>
+          {% if 4 == detalleorden.Bandera_enviado or 7 == detalleorden.Bandera_enviado and request.user.groups.all.values.get.name == 'Vendedor_perfil' %}
+            <div>
+              <label for="w3mission">Comentario</label>
+              <textarea id="w3mission" rows="4" cols="100" disabled = True>
+                {{comment}}
+              </textarea>  
+            </div>
+          {% endif %}                                
           {% if 1 == detalleorden.Bandera_enviado or 4 == detalleorden.Bandera_enviado and request.user.groups.all.values.get.name == 'Vendedor_perfil' %}
             <div class="btn-group">
               <input type="submit" class="btn btn-primary btn-block py-2" value="Actualizar" name="Actualizar">
@@ -103,9 +112,15 @@
               <input type="submit" class="btn btn-primary btn-block py-2" value="Revisar" name="Revisar">
             </div>
           {% endif %}
+          {% if 3 == detalleorden.Bandera_enviado and request.user.groups.all.values.get.name == 'Tesoreria_perfil' %}
+            <div class="btn-group">
+              <input type="submit" class="btn btn-success" name="Aceptar_tesoreria" value="Aceptar">
+              <input type="submit" class="btn btn-danger" name="Rechazar_tesoreria" value="Rechazar">
+              <input type="submit" class="btn btn-primary btn-block py-2" name="Revisar_tesoreria" value="Revisar">
+            </div>
+          {% endif %}
         </form>
       </div>
-      
     </div>
   </div>
 </section>

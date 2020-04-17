@@ -17,19 +17,45 @@ class ClienteForm(forms.ModelForm):
         self.fields['categoria_cliente'].disabled = True
         self.fields['name_contact'].disabled = True
 
-class DetalleOrdenForm(forms.ModelForm):
 
+
+class DetalleOrdenForm(forms.ModelForm):
+    
     class Meta:
         model = DetalleOrden
-        fields=['solicitud','aumentoModificacion','documentoTributario','alimentacion']
+        fields=['solicitud','aumentoModificacion','documentoTributario','alimentacion','sales_program']
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if self.instance.pk and (self.instance.Bandera_enviado == 2 or self.instance.Bandera_enviado == 3 or self.instance.Bandera_enviado == 5):
+        
+        if self.instance.pk and (self.instance.Bandera_enviado == 2 or self.instance.Bandera_enviado == 3 
+                        or self.instance.Bandera_enviado == 5 or self.instance.Bandera_enviado == 6 
+                                                        or self.instance.Bandera_enviado == 8):
+        
             self.fields['solicitud'].disabled = True
             self.fields['aumentoModificacion'].disabled = True
             self.fields['documentoTributario'].disabled = True
             self.fields['alimentacion'].disabled = True
+            self.fields['sales_program'].disabled = True
+
+class DetalleOrdenForm_aprobador_ecomer(forms.ModelForm):
+
+    class Meta:
+        model = DetalleOrden
+        fields=['solicitud','aumentoModificacion','documentoTributario','alimentacion','sales_program']
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        if self.instance.pk and (self.instance.Bandera_enviado == 4 or self.instance.Bandera_enviado == 7):
+            self.fields['solicitud'].disabled = True
+            self.fields['aumentoModificacion'].disabled = True
+            self.fields['documentoTributario'].disabled = True
+            self.fields['alimentacion'].disabled = True
+            self.fields['sales_program'].disabled = True
+
+
+
 
 class ArticuloForm2(forms.ModelForm):
 
@@ -54,3 +80,10 @@ class ArticuloForm(forms.ModelForm):
 
 DetalleArticuloFormSet = inlineformset_factory(DetalleOrden, Articulos, form= ArticuloForm, extra=5)
 DetalleArticuloFormSet2 = inlineformset_factory(DetalleOrden, Articulos, form= ArticuloForm2, extra=5)
+
+
+
+
+class DetalleOrdenForm_comment(forms.Form):
+    comentario= forms.CharField(label="Comentario", required=True, widget=forms.Textarea)
+

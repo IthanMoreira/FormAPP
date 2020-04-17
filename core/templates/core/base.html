@@ -15,11 +15,9 @@
     <link href="{% static 'core/css/main.css' %}" rel="stylesheet">
     <!-- Tempus Dominus Bootstrap 4 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
-
   </head>
   <body>
-    <body>
-      <!-- Navegación -->
+    <!-- Navegación -->
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
           <a class="navbar-brand" href="{% url 'home' %}">FormulaAPP</a>
@@ -53,6 +51,7 @@
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
 
       {% include 'formulario/includes/pages_menu.html' %} <!-- De otra APP -->
+      
       {% block content %}{% endblock %}
       
       <!-- Javascript -->

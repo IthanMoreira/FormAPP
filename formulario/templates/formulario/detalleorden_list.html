@@ -9,13 +9,32 @@
 <main role="main">
   <div class="container mb-4">
     <form action="{% url 'formUrl:View_DetalleOrden' %}" method="GET">
-       ID : 
-        <input type="number" name="filterId"  style="width:60px" / >
-        <input type="submit" value="Filtrar">
+      
+      <div class="input-group" >
+        <div class="input-group date" id="datetimepicker4" data-target-input="nearest" style="width:200px">
+          Fecha 
+          <input type="data" name="filterId"  class="form-control datetimepicker-input" data-target="#datetimepicker4"/>
+          <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-calendar"></i></div>              
+          </div>
+        </div>
+        <input type="submit" value="Filtrar">   
+      </div>
+          
+      <script type="text/javascript">
+          $(function () {
+              $('#datetimepicker4').datetimepicker({
+                  format: 'YYYY-MM-D',
+                  autoclose: true,
+                  locale: 'es'                  
+                                    
+              });
+          });
+      </script>
+       
         
-        {% csrf_token %}
+      {% csrf_token %}
     </form>
-
     <div>
       
       <a href="{% url 'formUrl:View_DetalleOrden' %}">All</a>|
@@ -24,7 +43,9 @@
       <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Aprobado">Aprobado</a>|
       <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Pendiente con observaciones">Pendiente con observaciones</a>|
       <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=Rechazar">Rechazado</a>|
-
+      <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=AprobadoTesoreria">Aprobado tesorería</a>|
+      <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=POTesoreria">Pendiente con observaciones tesorería</a>|
+      <a href="{% url 'formUrl:View_DetalleOrden' %}?filter=RechazarTesorería">Rechazar tesorería</a>|
     </div>
     
     {% if 'ok' in request.GET %}
@@ -35,6 +56,7 @@
     <table class="table table-bordered">
       <thead>
         <tr>
+          <td>Fecha de creación</td>
           <td>Nombres cliente</td>
           <td>RUT del cliente</td>
           <td>aumentoModificacion</td>
@@ -42,6 +64,7 @@
           <td>Incluye Alimentación</td>
           <td>Estado</td>
           <td>Acciones</td>
+          
         </tr>
         
       </thead>
@@ -49,17 +72,17 @@
         {% if object_list %}
           {% for DetalleOrden in detalleorden_list %}
             <tr>
+              <td>{{ DetalleOrden.created |date:"d/m/Y"  }}</td>
               <td>{{ DetalleOrden.client.name_cliente }}</td>
               <td>{{ DetalleOrden.client.RUT_cliente }}</td>
               <td>{{ DetalleOrden.aumentoModificacion }}</td>
               <td>{{ DetalleOrden.documentoTributario }}</td>
               <td>{{ DetalleOrden.alimentacion }}</td>
-              <td>{{ DetalleOrden.get_Bandera_enviado_display }}</td>
-              
+              <td>{{ DetalleOrden.get_Bandera_enviado_display }}</td>              
               <td>
                   {% if request.user.groups.all.values.get.name == 'Vendedor_perfil'  %}
                     <div class="btn-group">
-                      {% if 2 == DetalleOrden.Bandera_enviado or 3 == DetalleOrden.Bandera_enviado or 5 == DetalleOrden.Bandera_enviado%}
+                      {% if 2 == DetalleOrden.Bandera_enviado or 3 == DetalleOrden.Bandera_enviado or 5 == DetalleOrden.Bandera_enviado or 6 == DetalleOrden.Bandera_enviado%}
                         <a href="{% url 'formUrl:update_DetalleOrden' DetalleOrden.id %}" title="Ver" type="button" class="btn btn-success">Ver </a>
                       {% endif %}
                       {% if 1 == DetalleOrden.Bandera_enviado or 4 == DetalleOrden.Bandera_enviado %}
@@ -79,34 +102,34 @@
       </tbody>
     </table>
               <!-- Menú de paginación -->
-          {% if is_paginated %}
-          <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-              {% if page_obj.has_previous %}
-                <li class="page-item ">
-                  <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
-                </li>
-              {% else %}
-                <li class="page-item disabled">
-                  <a class="page-link" href="#" tabindex="-1">&laquo;</a>
-                </li>
-              {% endif %}
-              {% for i in paginator.page_range %}
-                <li class="page-item {% if page_obj.number == i %}active{% endif %}">
-                  <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-                </li>
-              {% endfor %}
-              {% if page_obj.has_next %}
-                <li class="page-item ">
-                  <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
-                </li>
-              {% else %}
-                <li class="page-item disabled">
-                  <a class="page-link" href="#" tabindex="-1">&raquo;</a>
-                </li>
-              {% endif %}
-            </ul>
-          </nav>
+      {% if is_paginated %}
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+              <li class="page-item ">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">&laquo;</a>
+              </li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+              <li class="page-item {% if page_obj.number == i %}active{% endif %}">
+                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+              </li>
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li class="page-item ">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">&raquo;</a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
       {% endif %}
   </div>
 </main>

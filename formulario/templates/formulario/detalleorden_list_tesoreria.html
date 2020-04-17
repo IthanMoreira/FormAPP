@@ -46,11 +46,22 @@
           
           <td>
 
+            {% if request.user.groups.all.values.get.name == 'Tesoreria_perfil'  %}
+               {% if 3 == DetalleOrden.Bandera_enviado %}
+                  <a href="{% url 'formUrl:update_DetalleOrden' DetalleOrden.id %}" title="Ver" type="button" class="btn btn-success">Ver </a>
+                {% endif %}
+            {% endif %}
+
+
+            <!-- Futuro solo 1 y no 3 
             {% if request.user.groups.all.values.get.name == 'Aprobador_perfil'  %}
                {% if 2 == DetalleOrden.Bandera_enviado %}
                   <a href="{% url 'formUrl:update_DetalleOrden' DetalleOrden.id %}" title="Ver" type="button" class="btn btn-success">Ver </a>
                 {% endif %}
-            {% endif %}
+            {% endif %}-->
+
+
+            
           </td>
         </tr>
         {% endfor %}
